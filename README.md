@@ -18,7 +18,7 @@
 
 若单独使用，需要先将其编译，编译时应该使用C++11或更高版本
 
-编译后，打开cmd窗口，然后按以下方式调用
+编译后，打开系统终端，然后按以下方式调用
 
 ```
 main.exe YourCode.cpp Output.cpp    (Windows cmd)
