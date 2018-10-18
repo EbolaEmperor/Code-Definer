@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int SZ=72;
+const int SZ=80;
 const string s[SZ]={
-	"static","EOF","fwrite","upper_bound","+=","-=","%=","*=","/=","/","++","--","<=",">=","||","&&","getchar","cout","!","%","^","&","*","(",")","+","[","]","{","}","<",">","?",";",":",",","for","const","return","main","int","long","if","pair","typedef","using","namespace","std","bool","double","while","fread","char","inline","break","continue","else","queue","stack","priority_queue","=","printf","scanf","cin","min","max","struct","<<",">>","!=","==","goto"};//41
+"<<=","stdin","isdigit",">>=","puts","unique","first","second","?","static","EOF","fwrite","upper_bound","+=","-=","%=","*=","/=","/","++","--","<=",">=","||","&&","getchar","cout","!","%","^","&","*","(",")","+","[","]","{","}","<",">",";",":",",","for","const","return","main","int","long","if","pair","typedef","using","namespace","std","bool","double","while","fread","char","inline","break","continue","else","queue","stack","priority_queue","=","printf","scanf","cin","min","max","struct","<<",">>","!=","==","goto"};//41
 int main(){
 	freopen("headers.h","w",stdout);
 	printf("const int SZ=%d;\n",SZ);
