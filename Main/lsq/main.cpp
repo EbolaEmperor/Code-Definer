@@ -18,6 +18,15 @@ bool ck(string tmp){
 			ss<<mp[tmp]<<' ';\
 			p+=2;\
 	}
+
+#define thr(a,b,c) \
+	if(buf[p]==a&&p<(int)buf.length()-2&&buf[p+1]==b&&buf[p+2]==c){\
+		string tmp;\
+		tmp+=a,tmp+=b,tmp+=c;\
+		ss<<mp[tmp]<<' ';\
+		p+=3;\
+	}
+
 int main(int argv,char* argc[]){
 	freopen(argc[2],"w",stdout);
 	freopen(argc[1],"r",stdin);
@@ -27,18 +36,24 @@ int main(int argv,char* argc[]){
 	}
 	stringstream ss;
 	while(getline(cin,buf)){
-		int p=0;
+		int p=0,flag=1;
 		for(;p<(int)buf.length();){
-			if(buf[0]=='#'){
-				ss<<buf<<endl;
-				break;
+			if(flag&&buf[0]=='#'){
+				flag=0;
+				if(buf[1]=='i'){
+					ss<<buf<<endl;
+					break;
+				}
+				else ss<<"#define ",p=8;
 			}
-			if(isalpha(buf[p])){
+			if(isalpha(buf[p])||buf[p]=='_'){
 				string tmp;
-				while(isalpha(buf[p])||buf[p]=='_') tmp+=buf[p],p++;
+				while(isalpha(buf[p])||buf[p]=='_'||isdigit(buf[p])) tmp+=buf[p],p++;
 				ck(tmp);			
 				ss<<mp[tmp]<<' ';
 			}
+			else thr('>','>','=')
+			else thr('<','<','=')
 			else two('<','<')
 			else two('>','>')
 			else two('!','=')
@@ -76,7 +91,7 @@ int main(int argv,char* argc[]){
 			}
 			else if(isdigit(buf[p])){
 				string tmp;
-				while(isdigit(buf[p])||buf[p]=='.') tmp+=buf[p],p++;
+				while(isdigit(buf[p])||buf[p]=='.'||isalpha(buf[p])) tmp+=buf[p],p++;
 				if(!ck(tmp)) cout<<"#define "<<mp[tmp]<<' '<<tmp<<endl;
 				ss<<mp[tmp]<<' ';
 			}
