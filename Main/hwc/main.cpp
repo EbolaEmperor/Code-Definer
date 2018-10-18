@@ -2,7 +2,7 @@
 using namespace std;
 
 char var_type[100][100];
-int var_count=8;
+int var_count=9;
 
 void var_type_init()
 {
@@ -14,6 +14,7 @@ void var_type_init()
     sprintf(var_type[5],"char");
     sprintf(var_type[6],"void");
     sprintf(var_type[7],"double");
+    sprintf(var_type[8],"float");
 }
 
 bool is_type(char *s,int len)
@@ -25,7 +26,7 @@ bool is_type(char *s,int len)
 }
 
 char source[1000000],*H,*T;
-vector<char*> vars;
+vector<char*> vars,structs;
 vector<int> lenth;
 int len_source;
 
@@ -56,6 +57,14 @@ bool is_main(char *s,int len)
     return 0;
 }
 
+bool is_struct_keyword(char *s,int len)
+{
+    s[len]='\0';
+    static char s_struct[7]="struct";
+    if(strcmp(s,s_struct)==0) return 1;
+    return 0;
+}
+
 bool is_typedef(char *s,int len)
 {
     s[len]='\0';
@@ -69,6 +78,14 @@ bool is_var(char *s,int len)
     s[len]='\0';
     for(char* var : vars)
         if(strcmp(s,var)==0) return 1;
+    return 0;
+}
+
+bool is_struct(char *s,int len)
+{
+    s[len]='\0';
+    for(char* stru : structs)
+        if(strcmp(s,stru)==0) return 1;
     return 0;
 }
 
@@ -99,6 +116,22 @@ void modify(int &p,char *s,int len)
     for(int i=0;i<len;i++) delete_source(p);
     for(int i=0;i<lenth[idx];i++) insert_source(p);
     p+=lenth[idx];
+}
+
+void add_struct(int &p)
+{
+    char word[50];int top=0;
+    while(!var_in_law(source[p])) p++;
+    while(var_in_law(source[p])) word[top++]=source[p++];
+    vars.push_back(nullptr);
+    vars.back()=new char[top+1];
+    sprintf(vars.back(),word);
+    vars.back()[top]='\0';
+    if(lenth.empty()) lenth.push_back(5);
+    else lenth.push_back(lenth.back()+1);
+    structs.push_back(vars.back());
+    modify(p,word,top);
+    add_type_before(p);
 }
 
 void next_line(int &p){while(source[p]!=';') p++;}
@@ -141,10 +174,22 @@ void Main()
             i++;
         }
         while(var_in_law(source[i])) word[top++]=source[i++];
+        if(is_struct_keyword(word,top))
+        {
+            add_struct(i);
+            continue;
+        }
         if(is_typedef(word,top))
         {
             next_line(i);
             add_type_before(i);
+            continue;
+        }
+        if(is_struct(word,top))
+        {
+            int x=get_var(word,top);
+            modify(i,word,top);
+            i-=lenth[x];
             continue;
         }
         if(is_type(word,top))
